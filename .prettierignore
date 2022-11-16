@@ -1,5 +1,7 @@
 dist
 docs
 node_modules
-*-lock.json
+package*.json
 *.lock
+*.yml
+*.md

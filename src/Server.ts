@@ -10,7 +10,7 @@ import cors from "cors";
 import "@tsed/ajv";
 import "@tsed/swagger";
 import { config } from "./config/index";
-import * as rest from "./controllers/rest/index";
+import * as api from "./controllers/api/index";
 import * as pages from "./controllers/pages/index";
 
 @Configuration({
@@ -20,12 +20,12 @@ import * as pages from "./controllers/pages/index";
   httpsPort: false, // CHANGE
   componentsScan: false,
   mount: {
-    "/rest": [...Object.values(rest)],
+    "/api": [...Object.values(api)],
     "/": [...Object.values(pages)]
   },
   swagger: [
     {
-      path: "/doc",
+      path: "/docs",
       specVersion: "3.0.1"
     }
   ],
