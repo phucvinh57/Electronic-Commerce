@@ -21,7 +21,7 @@ import supertokens from "./middlewares/supertokens";
 @Configuration({
     ...config,
     acceptMimes: ["application/json"],
-    httpPort: process.env.PORT || 8081,
+    httpPort: process.env.BACKEND_PORT || 8081,
     httpsPort: false, // CHANGE
     componentsScan: false,
     mount: {

@@ -38,27 +38,19 @@ services:
     build: 
       context: ./docker
     ports:
-      - ${MONGO_PORT}:27017
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: bkushop
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_REPLICA_HOST: localhost
-      MONGO_REPLICA_PORT: ${MONGO_PORT}
+      MONGO_REPLICA_PORT: 27017
     volumes:
       - bkushop_mongodb:/data/db
       - ./docker/init:/docker-entrypoint-initdb.d:ro
     networks:
       - app_network
     # restart: always
-  
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    restart: always
-    networks:
-      - app_network
 
 volumes:
   userdb:
