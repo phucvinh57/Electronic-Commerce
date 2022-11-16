@@ -6,3 +6,6 @@ bootstrap:
 update:
 	docker-compose down --volumes --remove-orphans;
 	make bootstrap
+
+clean:
+	docker-compose down --volumes --remove-orphans;

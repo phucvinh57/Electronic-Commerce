@@ -3,7 +3,6 @@ version: '3'
 services:
   userdb:
     image: 'postgres:latest'
-    container_name: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -41,7 +40,7 @@ services:
       MONGO_REPLICA_HOST: localhost
       MONGO_REPLICA_PORT: ${MONGO_PORT}
     volumes:
-      - device_mongodb:/data/db
+      - bkushop_mongodb:/data/db
       - ./docker/init:/docker-entrypoint-initdb.d:ro
     networks:
       - app_network
