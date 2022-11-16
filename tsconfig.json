@@ -25,7 +25,8 @@
         "lib": ["es7", "es2021", "dom", "ESNext.AsyncIterable"],
         "typeRoots": ["./node_modules/@types"],
         "paths": {
-            "@controllers": ["./src/controllers"]
+            "@controllers": ["./src/controllers"],
+            "@envs": ["./src/config/envs"]
         }
     },
     "include": ["src"],
