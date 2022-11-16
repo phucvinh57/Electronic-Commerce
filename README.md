@@ -14,3 +14,47 @@ Then, type these commands in order:
 ## Descriptions
 
 All entrypoints for REST begin with `/api`. The docs of APIs is on `/docs`.
+
+## Sign in & Sign up
+
+- Sign in: `POST /auth/signin`
+
+```json
+{
+    "formFields": [
+        {
+            "id": "email",
+            "value": "dcmclgt@gmail.com"
+        },
+        {
+            "id": "password",
+            "value": "vinh0507"
+        }
+    ]
+}
+```
+
+- Sign up: `POST /auth/signup`:
+
+```json
+{
+    "formFields": [
+        {
+            "id": "email",
+            "value": "dcmclgt@gmail.com"
+        },
+        {
+            "id": "password",
+            "value": "vinh0507"
+        },
+        {
+            "id": "firstname",
+            "value": "Vinh"
+        },
+        {
+            "id": "lastname",
+            "value": "Nguyen"
+        }
+    ]
+}
+```
