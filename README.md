@@ -1,10 +1,17 @@
 # TMDT Assignment Backend
 
+## Prerequisites
+
+- yarn v1.22.19
+- node v16.17.0
+- docker v20.10.21
+- docker-compose 1.29.2
+
 ## How to run
 
-First, copy your `.env` file from `.env.example` template. Fill out your mongodb username, password and modify `MONGO_DATABASE_URL` (just modify `<username>` and `<password>`).
+First, copy your `.env` file from `.env.example` template. Fill out environment variables.
 
-For `CORS_WHITE_LIST`, you can add multiple domain name, but in case testing on local, just fill your frontend domain.
+For `CORS_WHITE_LIST`, you can add multiple domain name, but in case testing on local, just fill your frontend domain (such as <http://localhost:3000>).
 
 Then, type these commands in order:
 
