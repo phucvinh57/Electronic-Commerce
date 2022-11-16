@@ -1,12 +1,11 @@
 {
     "directory": [
         "./src/controllers/apis",
-        "./src/controllers/pages"
+        "./src/controllers/pages",
+        "./src/services",
+        "./src/dtos/in",
+        "./src/dtos/out"
     ],
-    "exclude": [
-        "__mock__",
-        "__mocks__",
-        ".spec.ts"
-    ],
+    "exclude": ["__mock__", "__mocks__", ".spec.ts"],
     "delete": true
 }

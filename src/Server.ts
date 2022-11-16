@@ -14,47 +14,52 @@ import * as apis from "./controllers/apis/index";
 import * as pages from "./controllers/pages/index";
 import { CORS_WHITE_LIST } from "@envs";
 
+import { middleware as supertokensMiddleware } from "supertokens-node/framework/express";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
+
 @Configuration({
-  ...config,
-  acceptMimes: ["application/json"],
-  httpPort: process.env.PORT || 8081,
-  httpsPort: false, // CHANGE
-  componentsScan: false,
-  mount: {
-    "/api": [...Object.values(apis)],
-    "/": [...Object.values(pages)]
-  },
-  swagger: [
-    {
-      path: "/docs",
-      specVersion: "3.0.1"
-    }
-  ],
-  middlewares: [
-    cors({
-      origin: CORS_WHITE_LIST,
-      credentials: true
-    }),
-    cookieParser(),
-    compress({}),
-    methodOverride(),
-    bodyParser.json(),
-    bodyParser.urlencoded({
-      extended: true
-    })
-  ],
-  views: {
-    root: join(process.cwd(), "../views"),
-    extensions: {
-      ejs: "ejs"
-    }
-  },
-  exclude: ["**/*.spec.ts"]
+    ...config,
+    acceptMimes: ["application/json"],
+    httpPort: process.env.PORT || 8081,
+    httpsPort: false, // CHANGE
+    componentsScan: false,
+    mount: {
+        "/api": [...Object.values(apis)],
+        "/": [...Object.values(pages)]
+    },
+    swagger: [
+        {
+            path: "/docs",
+            specVersion: "3.0.1"
+        }
+    ],
+    middlewares: [
+        cors({
+            origin: CORS_WHITE_LIST,
+            credentials: true
+        }),
+        cookieParser(),
+        compress({}),
+        methodOverride(),
+        bodyParser.json(),
+        bodyParser.urlencoded({
+            extended: true
+        }),
+        supertokensMiddleware(),
+        verifySession()
+    ],
+    views: {
+        root: join(process.cwd(), "../views"),
+        extensions: {
+            ejs: "ejs"
+        }
+    },
+    exclude: ["**/*.spec.ts"]
 })
 export class Server {
-  @Inject()
-  protected app: PlatformApplication;
+    @Inject()
+    protected app: PlatformApplication;
 
-  @Configuration()
-  protected settings: Configuration;
+    @Configuration()
+    protected settings: Configuration;
 }

@@ -14,7 +14,14 @@ generator tsed {
   provider = "tsed-prisma"
 }
 
+model User {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @unique
+  firstName String
+  lastName  String
+}
+
 model HelloWorld {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  content String  @default("Hello cai cc")
+  content String @default("Hello cai cc")
 }

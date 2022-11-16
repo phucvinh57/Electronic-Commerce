@@ -26,7 +26,12 @@
         "typeRoots": ["./node_modules/@types"],
         "paths": {
             "@controllers": ["./src/controllers"],
-            "@envs": ["./src/config/envs"]
+            "@envs": ["./src/config/envs"],
+            "@guards": ["./src/guards"],
+            "@configs": ["./src/config"],
+            "@services": ["./src/services"],
+            "@dtos/out": ["./src/dtos/out"],
+            "@dtos/in": ["./src/dtos/in"]
         }
     },
     "include": ["src"],

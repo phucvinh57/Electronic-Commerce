@@ -1,26 +1,55 @@
 version: '3'
 
 services:
-  devicedb:
-    build:
-      context: ./docker/mongodb_replica
+  userdb:
+    image: 'postgres:latest'
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 27017:27017
+      - ${POSTGRES_PORT}:5432
+    networks:
+      - app_network
+    volumes:
+      - supertokens_postgresdb:/var/lib/postgresql/data
+    # restart: unless-stopped
+
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql
+    depends_on:
+      - userdb
+    ports:
+      - ${SUPERTOKENS_PORT}:3567
+    environment:
+      POSTGRESQL_CONNECTION_URI: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}'
+      PASSWORD_RESET_TOKEN_LIFETIME: 7200000
+    networks:
+      - app_network
+    # restart: always 
+  
+  tmdt_db:
+    build: 
+      context: ./docker
+    ports:
+      - ${MONGO_PORT}:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: concreteAI
+      MONGO_INITDB_DATABASE: bkushop
       MONGO_REPLICA_HOST: localhost
-      MONGO_REPLICA_PORT: 27017
+      MONGO_REPLICA_PORT: ${MONGO_PORT}
     volumes:
       - device_mongodb:/data/db
-      - ./docker/mongodb_replica/init:/docker-entrypoint-initdb.d:ro
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
     networks:
       - app_network
-    restart: always
+    # restart: always
 
 volumes:
-  device_mongodb:
+  supertokens_postgresdb:
+  bkushop_mongodb:
 
 networks:
   app_network:
