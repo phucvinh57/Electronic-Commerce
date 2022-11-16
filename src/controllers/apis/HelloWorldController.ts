@@ -9,6 +9,7 @@ export class HelloWorldController {
 
   @Get("/")
   async get() {
+    let a;
     return this.helloRepo.findMany();
   }
 
