@@ -1,60 +1,16 @@
-<p style="text-align: center" align="center">
-  <a href="https://tsed.io" target="_blank"><img src="https://tsed.io/tsed-og.png" width="200" alt="Ts.ED logo"/></a>
-</p>
+# TMDT Assignment Backend
 
-<div align="center">
-  <h1>Ts.ED - tm-t</h1>
-  <br />
-  <div align="center">
-    <a href="https://cli.tsed.io/">Website</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://cli.tsed.io/getting-started.html">Getting started</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://api.tsed.io/rest/slack/tsedio/tsed">Slack</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://twitter.com/TsED_io">Twitter</a>
-  </div>
-  <hr />
-</div>
+## How to run
 
-> An awesome project based on Ts.ED framework
+First, copy your `.env` file from `.env.example` template. Fill out your mongodb username, password and modify `MONGO_DATABASE_URL` (just modify `<username>` and `<password>`).
 
-## Getting started
+For `CORS_WHITE_LIST`, you can add multiple domain name, but in case testing on local, just fill your frontend domain.
 
-> **Important!** Ts.ED requires Node >= 14, Express >= 4 and TypeScript >= 4.
+Then, type these commands in order:
 
-```batch
-# install dependencies
-$  install
+1. make bootstrap
+2. yarn start
 
-# serve
-$  start
+## Descriptions
 
-# build for production
-$  build
-$  start:prod
-```
-
-## Docker
-
-```
-# build docker image
-docker compose build
-
-# start docker image
-docker compose up
-```
-
-## Barrelsby
-
-This project uses [barrelsby](https://www.npmjs.com/package/barrelsby) to generate index files to import the controllers.
-
-Edit `.barreslby.json` to customize it:
-
-```json
-{
-  "directory": ["./src/controllers/rest", "./src/controllers/pages"],
-  "exclude": ["__mock__", "__mocks__", ".spec.ts"],
-  "delete": true
-}
-```
+All entrypoints for REST begin with `/api`. The docs of APIs is on `/docs`.
