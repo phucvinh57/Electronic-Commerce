@@ -1,8 +1,9 @@
 version: '3'
 
 services:
-  userdb:
-    image: 'postgres:latest'
+  user:
+    image: postgres:15
+    container_name: ecommerce_user
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,23 +13,28 @@ services:
     networks:
       - app_network
     volumes:
-      - supertokens_postgresdb:/var/lib/postgresql/data
-    # restart: unless-stopped
+      - userdb:/var/lib/postgresql/data
+    # restart: always
 
-  supertokens:
-    image: registry.supertokens.io/supertokens/supertokens-postgresql
+  auth:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:4.0
     depends_on:
-      - userdb
+      - user
     ports:
       - ${SUPERTOKENS_PORT}:3567
     environment:
-      POSTGRESQL_CONNECTION_URI: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}'
+      POSTGRESQL_HOST: ecommerce_user
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_DATABASE_NAME: ${POSTGRES_DB}
+      POSTGRESQL_USER: ${POSTGRES_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRESQL_CONNECTION_POOL_SIZE: 10
       PASSWORD_RESET_TOKEN_LIFETIME: 7200000
     networks:
       - app_network
     # restart: always 
   
-  tmdt_db:
+  mongo:
     build: 
       context: ./docker
     ports:
@@ -45,11 +51,18 @@ services:
     networks:
       - app_network
     # restart: always
+  
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    restart: always
+    networks:
+      - app_network
 
 volumes:
-  supertokens_postgresdb:
+  userdb:
   bkushop_mongodb:
 
 networks:
   app_network:
-    driver: bridge

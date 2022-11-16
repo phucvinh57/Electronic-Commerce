@@ -16,6 +16,7 @@ import { CORS_WHITE_LIST } from "@envs";
 
 import { middleware as supertokensMiddleware } from "supertokens-node/framework/express";
 import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import supertokens from "./middlewares/supertokens";
 
 @Configuration({
     ...config,
@@ -36,6 +37,7 @@ import { verifySession } from "supertokens-node/recipe/session/framework/express
     middlewares: [
         cors({
             origin: CORS_WHITE_LIST,
+            allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
             credentials: true
         }),
         cookieParser(),
