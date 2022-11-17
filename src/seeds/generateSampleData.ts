@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { envs } from "../config/envs";
 import { Gender, PrismaClient, Product } from "@prisma/client";
 import { $log } from "@tsed/logger";
@@ -111,10 +112,10 @@ async function generateSampleData() {
         await db.cartItem.create({
             data: {
                 userId: userId,
-                amount: Math.floor(Math.random() * 1) + 3,
+                quantity: Math.floor(Math.random() * 1) + 3,
                 productId: products[0].id,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                productTypeId: firstProductType!.id
+                color: firstProductType!.color,
+                size: firstProductType!.size
             }
         });
 
