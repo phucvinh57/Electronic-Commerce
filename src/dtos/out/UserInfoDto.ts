@@ -6,10 +6,10 @@ export class UserInfoDto {
     userId: string;
 
     @Example("Vinh")
-    firstname: string;
+    firstName: string;
 
     @Example("Nguyen Phuc")
-    lastname: string;
+    lastName: string;
 
     @Example("npvinh0507@gmail.com")
     @Nullable(String)
@@ -35,8 +35,8 @@ export class UserInfoDto {
 
     constructor(user: UserModel) {
         this.userId = user.userId;
-        this.firstname = user.firstName;
-        this.lastname = user.lastName;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
         this.email = user.email;
         this.phone = user.phone;
         this.gender = user.gender;

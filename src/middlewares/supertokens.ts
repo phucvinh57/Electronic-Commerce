@@ -57,7 +57,13 @@ SuperTokens.init({
                                 const user = await UsersServiceInstance.getUserInfo(
                                     response.user.id
                                 );
-                                response.user = { ...response.user, ...user };
+                                response.user = {
+                                    ...response.user,
+                                    ...{
+                                        firstName: user.firstName,
+                                        lastName: user.lastName
+                                    }
+                                };
                             }
                             return response;
                         },
@@ -97,7 +103,8 @@ SuperTokens.init({
                                 await UsersServiceInstance.createUser(
                                     response.user.id,
                                     firstName,
-                                    lastName
+                                    lastName,
+                                    response.user.email
                                 );
                             }
                             return response;

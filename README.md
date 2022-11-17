@@ -18,6 +18,12 @@ Then, type these commands in order:
 1. make bootstrap
 2. yarn start
 
+Finally, generate sample data in other terminal:
+
+```bash
+yarn seed
+```
+
 ## Descriptions
 
 All entrypoints for REST begin with `/api`. The docs of APIs is on `/docs`.

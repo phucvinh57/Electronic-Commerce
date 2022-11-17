@@ -1,5 +1,5 @@
 import { Gender } from "@tsed/prisma";
-import { Enum, Example, Nullable, Property, Required } from "@tsed/schema";
+import { Email, Enum, Example, Nullable, Property, Required } from "@tsed/schema";
 
 export class UpdateUserInfoDto {
     @Example("Vinh")
@@ -11,8 +11,10 @@ export class UpdateUserInfoDto {
     lastName: string;
 
     @Example("npvinh0507@gmail.com")
+    @Required()
+    @Email()
     @Nullable(String)
-    email: string | null;
+    email: string;
 
     @Example("0373 395 726")
     @Nullable(String)

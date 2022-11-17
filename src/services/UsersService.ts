@@ -43,14 +43,15 @@ export class UsersService {
         return userId;
     }
 
-    async createUser(userId: string, firstName: string, lastName: string): Promise<string> {
+    async createUser(
+        userId: string,
+        firstName: string,
+        lastName: string,
+        email: string
+    ): Promise<string> {
         try {
             await this.userPrismaClient.create({
-                data: {
-                    userId,
-                    firstName: firstName,
-                    lastName: lastName
-                }
+                data: { userId, firstName, lastName, email }
             });
             return userId;
         } catch (err) {
