@@ -66,20 +66,23 @@ async function generateSampleData() {
                 coverImageUrl:
                     "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/divhtybtltxjtyhhq2i5/tee-shirt-sportswear-club-pour-DDLtRZ.png",
                 price: 14.5,
-                genders: [Gender.MALE]
+                genders: [Gender.MALE],
+                description: "Markdown"
             },
             {
                 name: "Sport T-shirt",
                 coverImageUrl:
                     "https://img.freepik.com/premium-vector/red-blue-soccer-jersey-uniform-football-club-t-shirt-front-back-view_155717-597.jpg",
                 genders: [Gender.MALE],
-                price: 2.3
+                price: 2.3,
+                description: "Markdown"
             },
             {
                 name: "Unisex T-Shirt",
                 coverImageUrl: "https://cf.shopee.vn/file/d1973fb369dc54e73ec151da5e3be2f3",
                 genders: [Gender.FEMALE, Gender.MALE, Gender.OTHER],
-                price: 8.5
+                price: 8.5,
+                description: "Markdown"
             }
         ];
 
@@ -112,6 +115,15 @@ async function generateSampleData() {
                 productId: products[0].id,
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 productTypeId: firstProductType!.id
+            }
+        });
+
+        await db.rating.create({
+            data: {
+                userId: userId,
+                comment: "Some reviews",
+                star: Math.floor(Math.random() * 40 + 10) / 10,
+                productId: products[0].id
             }
         });
     } catch (err) {

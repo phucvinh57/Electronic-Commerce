@@ -1,6 +1,7 @@
 import { GetProductsQueryDto } from "@dtos/in";
-import { ProductSummaryDto } from "@dtos/out";
+import { ProductDetailDto, ProductSummaryDto } from "@dtos/out";
 import { Inject, Injectable } from "@tsed/di";
+import { BadRequest } from "@tsed/exceptions";
 import { ProductsRepository } from "@tsed/prisma";
 
 @Injectable()
@@ -8,7 +9,7 @@ export class ProductsService {
     @Inject()
     private productsRepository: ProductsRepository;
 
-    async getProducts(query: GetProductsQueryDto): Promise<ProductSummaryDto[]> {
+    async getByCondition(query: GetProductsQueryDto): Promise<ProductSummaryDto[]> {
         const products = await this.productsRepository.findMany({
             select: {
                 id: true,
@@ -19,7 +20,7 @@ export class ProductsService {
                 discountType: true
             },
             where: {
-                productTypes: {
+                types: {
                     some: query.filter
                         ? {
                               color: query.filter.color ? query.filter.color : undefined,
@@ -46,5 +47,35 @@ export class ProductsService {
         });
 
         return products.map((product) => new ProductSummaryDto(product));
+    }
+
+    async getById(productId: string): Promise<ProductDetailDto> {
+        const product = await this.productsRepository.findUnique({
+            include: {
+                types: {
+                    select: { size: true, color: true, quantity: true }
+                },
+                ratings: {
+                    select: {
+                        star: true,
+                        user: {
+                            select: {
+                                userId: true,
+                                firstName: true,
+                                lastName: true,
+                                avatarUrl: true
+                            }
+                        },
+                        comment: true
+                    }
+                }
+            },
+            where: {
+                id: productId
+            }
+        });
+        if (!product) throw new BadRequest("Product does not exists !");
+
+        return new ProductDetailDto(product);
     }
 }

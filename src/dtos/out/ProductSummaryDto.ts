@@ -25,16 +25,11 @@ export class ProductSummaryDto {
         this.coverImageUrl = product.coverImageUrl;
         this.name = product.name;
         if (product.discount && product.discountType) {
-            switch (product.discountType) {
-                case DiscountType.PERCENT:
-                    this.currentPrice = product.price * (1 - product.discount);
-                    break;
-                case DiscountType.VALUE:
-                    this.currentPrice = product.price - product.discount;
-                    break;
-                default:
-                    throw new InternalServerError("Incorrect discount type");
-            }
+            if (product.discountType === DiscountType.PERCENT)
+                this.currentPrice = product.price * (1 - product.discount);
+            else if (product.discountType === DiscountType.VALUE)
+                this.currentPrice = product.price - product.discount;
+            else throw new InternalServerError("Incorrect discount type");
             this.originalPrice = product.price;
         } else {
             this.currentPrice = product.price;
