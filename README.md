@@ -71,3 +71,10 @@ All entrypoints for REST begin with `/api`. The docs of APIs is on `/docs`.
     ]
 }
 ```
+
+## Implemented API for figma pages
+
+[x] Register - 1
+[x] Register - 2
+[x] Catalog - 1
+[x] User Account - 1
