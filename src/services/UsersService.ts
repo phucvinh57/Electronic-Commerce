@@ -1,22 +1,21 @@
 import { BadRequest, InternalServerError } from "@tsed/exceptions";
 
-import { Injectable } from "@tsed/di";
+import { Inject, Injectable } from "@tsed/di";
 import { PrismaClient } from "@prisma/client";
-import { UserDetailDto } from "@dtos/out";
+import { UsersRepository } from "@tsed/prisma";
+import { UserInfoDto } from "@dtos/out";
+import { UpdateUserInfoDto } from "@dtos/in";
 
 @Injectable()
 export class UsersService {
     // Supertoken is not working normally with Ts.ed
-    // @Inject()
-    private usersRepository = new PrismaClient().user;
+    private userPrismaClient = new PrismaClient().user;
 
-    async getUserInfo(userId: string): Promise<UserDetailDto> {
-        const user = await this.usersRepository.findFirst({
-            select: {
-                userId: true,
-                firstName: true,
-                lastName: true
-            },
+    @Inject()
+    private usersRepository: UsersRepository;
+
+    async getUserInfo(userId: string): Promise<UserInfoDto> {
+        const user = await this.usersRepository.findUnique({
             where: {
                 userId: userId
             }
@@ -25,41 +24,35 @@ export class UsersService {
             throw new BadRequest("User not found !");
         }
 
-        return new UserDetailDto(user);
+        return new UserInfoDto(user);
     }
 
-    async createUser(userId: string, firstName: string, lastName: string): Promise<UserDetailDto> {
+    async updateUserInfo(userId: string, payload: UpdateUserInfoDto): Promise<string> {
+        await this.usersRepository.update({
+            data: {
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                email: payload.email,
+                phone: payload.phone,
+                birthday: payload.birthday,
+                gender: payload.gender
+            },
+            where: { userId }
+        });
+
+        return userId;
+    }
+
+    async createUser(userId: string, firstName: string, lastName: string): Promise<string> {
         try {
-            const user = await this.usersRepository.create({
+            await this.userPrismaClient.create({
                 data: {
                     userId,
                     firstName: firstName,
                     lastName: lastName
                 }
             });
-            return new UserDetailDto(user);
-        } catch (err) {
-            // May
-            throw new InternalServerError(err.message);
-        }
-    }
-
-    async updateUser(userId: string, firstName: string, lastName: string): Promise<UserDetailDto> {
-        try {
-            const user = await this.usersRepository.update({
-                data: {
-                    firstName,
-                    lastName
-                },
-                where: { userId },
-                select: {
-                    id: true,
-                    userId: true,
-                    firstName: true,
-                    lastName: true
-                }
-            });
-            return new UserDetailDto(user);
+            return userId;
         } catch (err) {
             throw new InternalServerError(err.message);
         }

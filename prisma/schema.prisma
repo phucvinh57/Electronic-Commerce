@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -28,7 +28,7 @@ model User {
   email     String?
   phone     String?
   gender    Gender?
-  birthdate DateTime?
+  birthday  DateTime?
   avatarUrl String?
   cartItems CartItem[]
 }
@@ -41,9 +41,8 @@ model CartItem {
 }
 
 model Product {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String?
   coverImageUrl String
-
 }
