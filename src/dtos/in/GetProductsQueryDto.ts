@@ -2,14 +2,12 @@ import { COLOR_VALUE_LENGTH } from "@constants";
 import { BadRequest } from "@tsed/exceptions";
 import { Gender, ProductSize } from "@tsed/prisma";
 import {
-    Allow,
-    CollectionOf,
+    Enum,
     Example,
     Max,
     MaxLength,
     Min,
     MinLength,
-    MinProperties,
     Nullable,
     Property,
     Required
@@ -30,14 +28,12 @@ class PriceRange {
 }
 
 class ProductQueryFilter {
-    @CollectionOf(Gender)
-    @Nullable(Gender)
-    @Example("MALE", "FEMALE")
-    genders?: Gender[] | null;
+    @Enum(Gender)
+    genders?: Gender[];
 
     @Property(PriceRange)
     @Nullable(PriceRange)
-    priceRange?: PriceRange | null;
+    priceRange?: PriceRange;
 
     @Nullable(String)
     @MaxLength(COLOR_VALUE_LENGTH)
@@ -45,8 +41,8 @@ class ProductQueryFilter {
     @Example("#343a40")
     color?: string | null;
 
-    @CollectionOf(ProductSize)
-    size?: ProductSize[] | null;
+    @Enum(ProductSize)
+    size?: ProductSize[];
 }
 
 export class GetProductsQueryDto {
@@ -61,10 +57,7 @@ export class GetProductsQueryDto {
     @Example(25)
     numOfItemsPerPage: number;
 
-    @Required()
-    @Allow(null)
     @Nullable(ProductQueryFilter)
     @Property(ProductQueryFilter)
-    @MinProperties(1)
-    filter: ProductQueryFilter | null;
+    filter?: ProductQueryFilter | null;
 }

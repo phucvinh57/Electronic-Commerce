@@ -41,7 +41,7 @@ export class ProductsService {
                           }
                         : undefined
             },
-            skip: query.pageNumber * query.numOfItemsPerPage,
+            skip: (query.pageNumber - 1) * query.numOfItemsPerPage,
             take: query.numOfItemsPerPage
         });
 
