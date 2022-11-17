@@ -31,7 +31,8 @@
             "@configs": ["./src/config"],
             "@services": ["./src/services"],
             "@dtos/in": ["./src/dtos/in"],
-            "@dtos/out": ["./src/dtos/out"]
+            "@dtos/out": ["./src/dtos/out"],
+            "@constants": ["./src/constants"]
         }
     },
     "include": ["src"],

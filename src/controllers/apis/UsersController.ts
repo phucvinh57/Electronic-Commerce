@@ -8,7 +8,7 @@ import { SessionContainer } from "supertokens-node/recipe/session";
 
 @Controller("/users")
 @Description("Account page")
-export class HelloWorldController {
+export class UsersController {
     @Inject()
     private usersService: UsersService;
 

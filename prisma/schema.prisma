@@ -41,8 +41,35 @@ model CartItem {
 }
 
 model Product {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String?
   coverImageUrl String
+  price         Float
+  discount      Float?
+  discountType  DiscountType?
+  genders       Gender[]
+  productTypes  ProductType[]
+}
+
+model ProductType {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  size      ProductSize
+  color     String
+  quantity  Int
+  product   Product     @relation(fields: [productId], references: [id])
+  productId String      @db.ObjectId
+}
+
+enum DiscountType {
+  PERCENT
+  VALUE
+}
+
+enum ProductSize {
+  S
+  M
+  L
+  XL
+  XXL
 }

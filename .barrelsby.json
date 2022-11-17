@@ -4,7 +4,8 @@
         "./src/controllers/pages",
         "./src/services",
         "./src/dtos/in",
-        "./src/dtos/out"
+        "./src/dtos/out",
+        "./src/constants"
     ],
     "exclude": ["__mock__", "__mocks__", ".spec.ts"],
     "delete": true
