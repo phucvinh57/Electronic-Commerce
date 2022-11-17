@@ -11,6 +11,7 @@
     "test": "yarn run test:lint && yarn run test:coverage",
     "test:unit": "cross-env NODE_ENV=test jest",
     "test:coverage": "yarn run test:unit",
+    "prisma:format": "npx prisma format",
     "prisma:push": "npx prisma db push",
     "prisma:generate": "npx prisma generate",
     "test:lint": "eslint '**/*.{ts,js}'",

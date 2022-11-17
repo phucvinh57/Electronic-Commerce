@@ -8,13 +8,11 @@ import { UserDetailDto } from "@dtos/out";
 export class UsersService {
     // Supertoken is not working normally with Ts.ed
     // @Inject()
-    // private usersRepository: UsersRepository
     private usersRepository = new PrismaClient().user;
 
     async getUserInfo(userId: string): Promise<UserDetailDto> {
         const user = await this.usersRepository.findFirst({
             select: {
-                id: true,
                 userId: true,
                 firstName: true,
                 lastName: true

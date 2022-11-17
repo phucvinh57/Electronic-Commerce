@@ -14,14 +14,36 @@ generator tsed {
   provider = "tsed-prisma"
 }
 
-model User {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String @unique
-  firstName String
-  lastName  String
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }
 
-model HelloWorld {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  content String @default("Hello cai cc")
+model User {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String     @unique
+  firstName String
+  lastName  String
+  email     String?
+  phone     String?
+  gender    Gender?
+  birthdate DateTime?
+  avatarUrl String?
+  cartItems CartItem[]
+}
+
+model CartItem {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId String
+  amount Int
+}
+
+model Product {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String?
+  coverImageUrl String
+
 }
