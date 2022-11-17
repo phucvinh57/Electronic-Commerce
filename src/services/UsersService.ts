@@ -12,10 +12,10 @@ export class UsersService {
     private userPrismaClient = new PrismaClient().user;
 
     @Inject()
-    private usersRepository: UsersRepository;
+    private usersRepository: UsersRepository = new UsersRepository();
 
     async getUserInfo(userId: string): Promise<UserInfoDto> {
-        const user = await this.usersRepository.findUnique({
+        const user = await this.userPrismaClient.findUnique({
             where: {
                 userId: userId
             }

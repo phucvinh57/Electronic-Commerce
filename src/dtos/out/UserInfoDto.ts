@@ -1,4 +1,4 @@
-import { Gender, UserModel } from "@tsed/prisma";
+import { User, Gender } from "@prisma/client";
 import { Enum, Example, Nullable, Property } from "@tsed/schema";
 
 export class UserInfoDto {
@@ -20,8 +20,8 @@ export class UserInfoDto {
     phone: string | null;
 
     @Example("MALE")
-    @Enum(Gender)
     @Nullable(Gender)
+    @Enum(Gender)
     gender: Gender | null;
 
     @Example("2022-11-17 19:00")
@@ -33,7 +33,7 @@ export class UserInfoDto {
     @Nullable(String)
     avatarUrl: string | null;
 
-    constructor(user: UserModel) {
+    constructor(user: User) {
         this.userId = user.userId;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
