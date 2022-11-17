@@ -1,5 +1,7 @@
+import { ProductSortCriterion } from "@constants";
 import { GetProductsQueryDto } from "@dtos/in";
-import { ProductDetailDto, ProductSummaryDto } from "@dtos/out";
+import { ProductDetailDto, ProductBriefDto } from "@dtos/out";
+import { Prisma } from "@prisma/client";
 import { Inject, Injectable } from "@tsed/di";
 import { BadRequest } from "@tsed/exceptions";
 import { ProductsRepository } from "@tsed/prisma";
@@ -9,17 +11,32 @@ export class ProductsService {
     @Inject()
     private productsRepository: ProductsRepository;
 
-    async getByCondition(query: GetProductsQueryDto): Promise<ProductSummaryDto[]> {
+    private readonly getProductBriefQuery: Prisma.ProductSelect = {
+        id: true,
+        coverImageUrl: true,
+        name: true,
+        price: true,
+        discount: true
+    };
+
+    async getByCondition(query: GetProductsQueryDto): Promise<ProductBriefDto[]> {
+        let orderBy: Record<string, unknown> | undefined;
+        if (!query.order) {
+            orderBy = undefined;
+        } else if (query.order.criterion === ProductSortCriterion.NEW_ARRIVAL) {
+            orderBy = { createdAt: query.order.order };
+        } else if (query.order.criterion === ProductSortCriterion.BEST_SELLER) {
+            orderBy = { orders: { _count: query.order.order } };
+        } else if (query.order.criterion === ProductSortCriterion.ON_SALE) {
+            orderBy = { discount: query.order.order };
+        } else if (query.order.criterion === ProductSortCriterion.NONE) {
+            orderBy = undefined;
+        }
+
         const products = await this.productsRepository.findMany({
-            select: {
-                id: true,
-                coverImageUrl: true,
-                name: true,
-                price: true,
-                discount: true,
-                discountType: true
-            },
+            select: this.getProductBriefQuery,
             where: {
+                createdAt: { gte: query.from },
                 types: {
                     some: query.filter
                         ? {
@@ -42,33 +59,36 @@ export class ProductsService {
                           }
                         : undefined
             },
+            orderBy,
             skip: (query.pageNumber - 1) * query.numOfItemsPerPage,
             take: query.numOfItemsPerPage
         });
 
-        return products.map((product) => new ProductSummaryDto(product));
+        return products.map((product) => new ProductBriefDto(product));
     }
 
     async getById(productId: string): Promise<ProductDetailDto> {
+        const selectRatingsQuery: Prisma.RatingFindManyArgs = {
+            select: {
+                star: true,
+                user: {
+                    select: {
+                        userId: true,
+                        firstName: true,
+                        lastName: true,
+                        avatarUrl: true
+                    }
+                },
+                comment: true
+            }
+        };
+
         const product = await this.productsRepository.findUnique({
             include: {
                 types: {
                     select: { size: true, color: true, quantity: true }
                 },
-                ratings: {
-                    select: {
-                        star: true,
-                        user: {
-                            select: {
-                                userId: true,
-                                firstName: true,
-                                lastName: true,
-                                avatarUrl: true
-                            }
-                        },
-                        comment: true
-                    }
-                }
+                ratings: selectRatingsQuery
             },
             where: {
                 id: productId

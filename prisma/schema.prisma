@@ -32,6 +32,7 @@ model User {
   avatarUrl String?
   cartItems CartItem[]
   ratings   Rating[]
+  orders    Order[]
 }
 
 model CartItem {
@@ -41,6 +42,20 @@ model CartItem {
   productId     String
   productTypeId String
   amount        Int
+}
+
+model Order {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  price         Float
+  quantity      Int
+  totalPrice    Int
+  coverImageUrl String
+  summary       String?
+  createdAt     DateTime @default(now())
+  product       Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId     String?  @db.ObjectId
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String   @db.ObjectId
 }
 
 model Rating {
@@ -56,15 +71,17 @@ model Rating {
 model Product {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
   name          String
+  summary       String?
   description   String
   imageUrls     String[]
   coverImageUrl String
   price         Float
   discount      Float?
-  discountType  DiscountType?
   genders       Gender[]
   types         ProductType[]
   ratings       Rating[]
+  createdAt     DateTime      @default(now())
+  orders        Order[]
 }
 
 model ProductType {
@@ -74,11 +91,6 @@ model ProductType {
   quantity  Int
   product   Product     @relation(fields: [productId], references: [id])
   productId String      @db.ObjectId
-}
-
-enum DiscountType {
-  PERCENT
-  VALUE
 }
 
 enum ProductSize {

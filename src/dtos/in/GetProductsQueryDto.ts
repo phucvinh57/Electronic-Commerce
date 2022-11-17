@@ -1,4 +1,4 @@
-import { COLOR_VALUE_LENGTH } from "@constants";
+import { COLOR_VALUE_LENGTH, ProductSortCriterion, SortOrder } from "@constants";
 import { BadRequest } from "@tsed/exceptions";
 import { Gender, ProductSize } from "@tsed/prisma";
 import {
@@ -25,6 +25,16 @@ class PriceRange {
     validate() {
         if (this.from > this.to) throw new BadRequest("From must less than to!");
     }
+}
+
+class ProductQueryOrder {
+    @Enum(SortOrder)
+    @Required()
+    order: SortOrder;
+
+    @Enum(SortOrder)
+    @Required()
+    criterion: ProductSortCriterion;
 }
 
 class ProductQueryFilter {
@@ -60,4 +70,11 @@ export class GetProductsQueryDto {
     @Nullable(ProductQueryFilter)
     @Property(ProductQueryFilter)
     filter?: ProductQueryFilter | null;
+
+    @Property(ProductQueryOrder)
+    @Nullable(ProductQueryOrder)
+    order?: ProductQueryOrder | null;
+
+    @Required()
+    from: Date;
 }

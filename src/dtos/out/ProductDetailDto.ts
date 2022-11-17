@@ -1,5 +1,4 @@
-import { InternalServerError } from "@tsed/exceptions";
-import { DiscountType, ProductModel, ProductSize, RatingModel } from "@tsed/prisma";
+import { ProductModel, ProductSize, RatingModel } from "@tsed/prisma";
 import { CollectionOf, Description, Enum, Example, Max, Min, Nullable } from "@tsed/schema";
 
 class ProductRating {
@@ -57,10 +56,6 @@ export class ProductDetailDto {
     @Example(25)
     discount?: number;
 
-    @Example(DiscountType.PERCENT)
-    @Enum(DiscountType)
-    discountType?: DiscountType;
-
     @CollectionOf(String)
     colors: Set<string>;
 
@@ -75,18 +70,13 @@ export class ProductDetailDto {
         this.name = product.name;
         this.imageUrls = product.imageUrls;
         this.description = product.description;
-        if (product.discount && product.discountType) {
-            if (product.discountType === DiscountType.PERCENT)
-                this.currentPrice = product.price * (1 - product.discount);
-            else if (product.discountType === DiscountType.VALUE)
-                this.currentPrice = product.price - product.discount;
-            else throw new InternalServerError("Incorrect discount type");
+        if (product.discount) {
+            this.currentPrice = product.price - product.discount;
             this.originalPrice = product.price;
         } else {
             this.currentPrice = product.price;
         }
         this.discount = product.discount ? product.discount : undefined;
-        this.discountType = product.discountType ? product.discountType : undefined;
 
         const colors = new Set<string>();
         const sizes = new Set<ProductSize>();
