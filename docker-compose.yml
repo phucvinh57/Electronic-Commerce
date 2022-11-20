@@ -14,7 +14,7 @@ services:
       - app_network
     volumes:
       - userdb:/var/lib/postgresql/data
-    # restart: always
+    restart: always
 
   auth:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:4.0
@@ -32,7 +32,7 @@ services:
       PASSWORD_RESET_TOKEN_LIFETIME: 7200000
     networks:
       - app_network
-    # restart: always 
+    restart: always 
   
   mongo:
     build: 
@@ -50,7 +50,7 @@ services:
       - ./docker/init:/docker-entrypoint-initdb.d:ro
     networks:
       - app_network
-    # restart: always
+    restart: always
 
 volumes:
   userdb:

@@ -3,4 +3,5 @@
  */
 
 export * from "./GetProductsQueryDto";
+export * from "./UpdateCartItemDto";
 export * from "./UpdateUserInfoDto";

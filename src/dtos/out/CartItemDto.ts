@@ -23,10 +23,10 @@ export class CartItemDto {
     quantity: number;
 
     @Enum(ProductSize)
-    size: ProductSize;
+    size: ProductSize | null;
 
     @Example("#343a40")
-    color: string;
+    color: string | null;
 
     constructor(item: CartItemModel) {
         this.id = item.id;

@@ -1,3 +1,4 @@
+import { UpdateCartItemDto } from "@dtos/in";
 import { CartItemDto } from "@dtos/out";
 import { Prisma } from "@prisma/client";
 import { Inject, Injectable } from "@tsed/di";
@@ -29,5 +30,32 @@ export class CartService {
         });
 
         return cartItems.map((item) => new CartItemDto(item));
+    }
+
+    async addItem(userId: string, productId: string): Promise<string> {
+        const item = await this.cartItemsRepository.create({
+            data: { productId, userId }
+        });
+        return item.id;
+    }
+
+    async removeItem(itemId: string): Promise<string> {
+        await this.cartItemsRepository.delete({
+            where: { id: itemId }
+        });
+        return itemId;
+    }
+
+    async updateItem(payload: UpdateCartItemDto) {
+        await this.cartItemsRepository.update({
+            data: {
+                quantity: payload.quantity,
+                color: payload.color,
+                size: payload.size
+            },
+            where: { id: payload.itemId }
+        });
+
+        return payload.itemId;
     }
 }

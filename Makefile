@@ -4,7 +4,7 @@ bootstrap:
 	yarn prisma:generate;
 
 update:
-	docker-compose down --volumes --remove-orphans;
+	make clean;
 	make bootstrap
 
 clean:
