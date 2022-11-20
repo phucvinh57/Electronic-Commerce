@@ -84,6 +84,9 @@ export class OrdersService {
 
     async getByStatus(userId: string, status?: OrderStatus): Promise<OrderDto[]> {
         const orders = await this.ordersRepository.findMany({
+            include: {
+                items: true
+            },
             where: {
                 userId: userId,
                 status: status
