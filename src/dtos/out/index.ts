@@ -3,6 +3,7 @@
  */
 
 export * from "./CartItemDto";
+export * from "./OrderDto";
 export * from "./ProductBriefDto";
 export * from "./ProductDetailDto";
 export * from "./UserInfoDto";

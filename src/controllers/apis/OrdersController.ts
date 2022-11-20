@@ -1,9 +1,11 @@
 import { CreateOrderDto } from "@dtos/in";
 import { Controller, Inject } from "@tsed/di";
-import { BodyParams, Session } from "@tsed/platform-params";
-import { Description, Post, Returns } from "@tsed/schema";
+import { BodyParams, QueryParams, Session } from "@tsed/platform-params";
+import { Description, Get, Post, Returns } from "@tsed/schema";
 import { OrdersService } from "@services";
 import { SessionContainer } from "supertokens-node/recipe/session";
+import { OrderStatus } from "@tsed/prisma";
+import { OrderDto } from "@dtos/out";
 
 @Controller("/orders")
 export class OrdersController {
@@ -18,5 +20,15 @@ export class OrdersController {
         @Session() session: SessionContainer
     ): Promise<string> {
         return this.ordersService.createOrder(session.getUserId(), payload);
+    }
+
+    @Get("/")
+    @Returns(200, Array).Of(OrderDto)
+    @Description("Get orders by status")
+    async getByStatus(
+        @Session() session: SessionContainer,
+        @QueryParams("status") status?: OrderStatus
+    ): Promise<OrderDto[]> {
+        return this.ordersService.getByStatus(session.getUserId(), status);
     }
 }

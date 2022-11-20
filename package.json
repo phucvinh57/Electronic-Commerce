@@ -13,7 +13,7 @@
     "test:coverage": "yarn run test:unit",
     "prisma:format": "npx prisma format",
     "prisma:push": "npx prisma db push",
-    "prisma:generate": "npx prisma generate",
+    "prisma:gen": "npx prisma generate",
     "test:lint": "eslint '**/*.{ts,js}'",
     "test:lint:fix": "eslint '**/*.{ts,js}' --fix",
     "format": "prettier '**/*.{ts,js,json,md,yml,yaml}' --write",

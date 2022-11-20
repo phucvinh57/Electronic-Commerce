@@ -36,7 +36,7 @@ export class ProductsService {
         const products = await this.productsRepository.findMany({
             select: this.getProductBriefQuery,
             where: {
-                createdAt: { gte: query.from },
+                createdAt: { gte: query.fromDate },
                 types: {
                     some: query.filter
                         ? {

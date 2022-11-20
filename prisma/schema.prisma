@@ -36,14 +36,14 @@ model User {
 }
 
 model CartItem {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
-  quantity  Int          @default(1)
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int         @default(1)
   color     String
   size      ProductSize
-  user      User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId    String
-  product   Product      @relation(fields: [productId], references: [id])
-  productId String       @db.ObjectId
+  product   Product     @relation(fields: [productId], references: [id])
+  productId String      @db.ObjectId
 }
 
 model Order {
@@ -57,7 +57,7 @@ model Order {
   createdAt     DateTime      @default(now())
   status        OrderStatus   @default(PENDING)
   user          User          @relation(fields: [userId], references: [id])
-  userId        String        @db.ObjectId
+  userId        String
   items         OrderItem[]
 }
 
@@ -69,6 +69,7 @@ model OrderItem {
   coverImageUrl String
   price         Float
   discount      Float       @default(0)
+  quantity      Int
   color         String
   size          ProductSize
   order         Order       @relation(fields: [orderId], references: [id])
@@ -106,7 +107,7 @@ model Product {
   imageUrls     String[]
   coverImageUrl String
   price         Float
-  discount      Float @default(0)
+  discount      Float         @default(0)
   genders       Gender[]
   types         ProductType[]
   ratings       Rating[]

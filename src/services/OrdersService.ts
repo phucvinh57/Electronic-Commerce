@@ -1,6 +1,7 @@
-import { SHIPPING_FEE } from "@constants";
+import { FAVOUR, SHIPPING_FEE } from "@constants";
 import { CreateOrderDto } from "@dtos/in";
-import { Prisma } from "@prisma/client";
+import { OrderDto } from "@dtos/out";
+import { OrderStatus, Prisma, PrismaClient } from "@prisma/client";
 import { Inject, Injectable } from "@tsed/di";
 import { BadRequest } from "@tsed/exceptions";
 import { CartItemsRepository, OrdersRepository } from "@tsed/prisma";
@@ -13,7 +14,13 @@ export class OrdersService {
     @Inject()
     private cartItemsRepository: CartItemsRepository;
 
+    @Inject()
+    private prismaClient: PrismaClient;
+
     async createOrder(userId: string, payload: CreateOrderDto): Promise<string> {
+        if (payload.favourCode && payload.favourCode !== FAVOUR.code) {
+            throw new BadRequest("Invalid favour code !");
+        }
         const userCartItems = await this.cartItemsRepository.findMany({
             select: {
                 quantity: true,
@@ -27,6 +34,7 @@ export class OrdersService {
 
         let totalPrice = 0;
         let totalDiscount = 0;
+
         const orderItems: Prisma.OrderItemCreateManyOrderInput[] = [];
         userCartItems.forEach((item) => {
             totalPrice += item.product.price;
@@ -39,26 +47,48 @@ export class OrdersService {
                 price: item.product.price,
                 discount: item.product.discount,
                 color: item.color,
-                size: item.size
+                size: item.size,
+                quantity: item.quantity
             });
         });
 
-        const order = await this.ordersRepository.create({
-            data: {
-                address: payload.address,
-                phone: payload.phone,
-                shippingFee: SHIPPING_FEE,
-                paymentMethod: payload.paymentMethod,
-                userId: userId,
-                price: totalPrice,
-                discount: totalDiscount,
-                items: {
-                    createMany: {
-                        data: orderItems
+        if (payload.favourCode === FAVOUR.code) {
+            totalDiscount += FAVOUR.value;
+        }
+
+        const [order] = await this.prismaClient.$transaction([
+            this.prismaClient.order.create({
+                data: {
+                    address: payload.address,
+                    phone: payload.phone,
+                    shippingFee: SHIPPING_FEE,
+                    paymentMethod: payload.paymentMethod,
+                    userId: userId,
+                    price: totalPrice,
+                    discount: totalDiscount,
+                    items: {
+                        createMany: {
+                            data: orderItems
+                        }
                     }
                 }
+            }),
+            // Clean cart
+            this.prismaClient.cartItem.deleteMany({
+                where: { userId: userId }
+            })
+        ]);
+
+        return order.id;
+    }
+
+    async getByStatus(userId: string, status?: OrderStatus): Promise<OrderDto[]> {
+        const orders = await this.ordersRepository.findMany({
+            where: {
+                userId: userId,
+                status: status
             }
         });
-        return order.id;
+        return orders.map((order) => new OrderDto(order));
     }
 }
