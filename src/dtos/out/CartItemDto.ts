@@ -5,6 +5,9 @@ export class CartItemDto {
     @Example("632d3d4f94440a5c9ea40e38")
     id: string;
 
+    @Example("632d3d4f94440a5c9ea40e38")
+    productId: string;
+
     @Example("https://avatars.githubusercontent.com/u/69946748")
     coverImageUrl: string;
 
@@ -37,5 +40,6 @@ export class CartItemDto {
         this.price = item.product.price;
         this.name = item.product.name;
         this.summary = item.product.summary;
+        this.productId = item.product.id;
     }
 }
