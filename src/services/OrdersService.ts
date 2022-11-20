@@ -1,10 +1,10 @@
 import { FAVOUR, SHIPPING_FEE } from "@constants";
 import { CreateOrderDto } from "@dtos/in";
 import { OrderDto } from "@dtos/out";
-import { OrderStatus, Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { Inject, Injectable } from "@tsed/di";
 import { BadRequest } from "@tsed/exceptions";
-import { CartItemsRepository, OrdersRepository } from "@tsed/prisma";
+import { CartItemsRepository, OrdersRepository, OrderStatus } from "@tsed/prisma";
 
 @Injectable()
 export class OrdersService {
@@ -93,5 +93,15 @@ export class OrdersService {
             }
         });
         return orders.map((order) => new OrderDto(order));
+    }
+
+    async cancelOrder(orderId: string): Promise<string> {
+        await this.ordersRepository.update({
+            data: {
+                status: OrderStatus.CANCELED
+            },
+            where: { id: orderId }
+        });
+        return orderId;
     }
 }

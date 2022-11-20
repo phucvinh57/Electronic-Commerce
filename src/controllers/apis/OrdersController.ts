@@ -1,11 +1,22 @@
 import { CreateOrderDto } from "@dtos/in";
 import { Controller, Inject } from "@tsed/di";
 import { BodyParams, QueryParams, Session } from "@tsed/platform-params";
-import { Description, Enum, Get, Post, Returns } from "@tsed/schema";
+import {
+    Description,
+    Enum,
+    Get,
+    MaxLength,
+    MinLength,
+    Post,
+    Put,
+    Required,
+    Returns
+} from "@tsed/schema";
 import { OrdersService } from "@services";
 import { SessionContainer } from "supertokens-node/recipe/session";
 import { OrderStatus } from "@tsed/prisma";
 import { OrderDto } from "@dtos/out";
+import { ID_LENGTH } from "@constants";
 
 @Controller("/orders")
 export class OrdersController {
@@ -33,5 +44,18 @@ export class OrdersController {
         status?: OrderStatus
     ): Promise<OrderDto[]> {
         return this.ordersService.getByStatus(session.getUserId(), status);
+    }
+
+    @Put("/cancel")
+    @Returns(200, String)
+    @Description("Cancel an order")
+    async cancelOrder(
+        @BodyParams("orderId")
+        @Required()
+        @MinLength(ID_LENGTH)
+        @MaxLength(ID_LENGTH)
+        orderId: string
+    ): Promise<string> {
+        return this.ordersService.cancelOrder(orderId);
     }
 }
