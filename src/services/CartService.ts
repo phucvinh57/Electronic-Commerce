@@ -2,12 +2,16 @@ import { UpdateCartItemDto } from "@dtos/in";
 import { CartItemDto } from "@dtos/out";
 import { Prisma } from "@prisma/client";
 import { Inject, Injectable } from "@tsed/di";
-import { CartItemsRepository } from "@tsed/prisma";
+import { ResourceNotFound } from "@tsed/platform-exceptions";
+import { CartItemsRepository, ProductTypesRepository } from "@tsed/prisma";
 
 @Injectable()
 export class CartService {
     @Inject()
     private cartItemsRepository: CartItemsRepository;
+
+    @Inject()
+    private productTypesRepository: ProductTypesRepository;
 
     private readonly getProductBriefQuery: Prisma.ProductSelect = {
         id: true,
@@ -33,8 +37,20 @@ export class CartService {
     }
 
     async addItem(userId: string, productId: string): Promise<string> {
+        const productDefaultType = await this.productTypesRepository.findFirst({
+            where: {
+                productId
+            }
+        });
+
+        if (!productDefaultType) throw new ResourceNotFound("Product does not have type !");
         const item = await this.cartItemsRepository.create({
-            data: { productId, userId }
+            data: {
+                productId,
+                userId,
+                color: productDefaultType.color,
+                size: productDefaultType.size
+            }
         });
         return item.id;
     }

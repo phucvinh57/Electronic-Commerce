@@ -3,5 +3,6 @@
  */
 
 export * from "./CartService";
+export * from "./OrdersService";
 export * from "./ProductsService";
 export * from "./UsersService";

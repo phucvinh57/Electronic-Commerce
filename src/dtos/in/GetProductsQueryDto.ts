@@ -76,5 +76,5 @@ export class GetProductsQueryDto {
     order?: ProductQueryOrder | null;
 
     @Required()
-    from: Date;
+    fromDate: Date;
 }

@@ -32,7 +32,8 @@
             "@services": ["./src/services"],
             "@dtos/in": ["./src/dtos/in"],
             "@dtos/out": ["./src/dtos/out"],
-            "@constants": ["./src/constants"]
+            "@constants": ["./src/constants"],
+            "@utils": ["./src/utils"]
         }
     },
     "include": ["src"],

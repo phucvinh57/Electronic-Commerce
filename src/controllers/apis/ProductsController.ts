@@ -18,7 +18,7 @@ export class ProductsController {
         return this.productsService.getByCondition(query);
     }
 
-    @Get("/detail/:id")
+    @Get("/:id")
     @Returns(200, ProductDetailDto)
     @Description("Get a product by id")
     async getProductById(

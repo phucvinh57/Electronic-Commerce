@@ -3,5 +3,6 @@
  */
 
 export * from "./CartController";
+export * from "./OrdersController";
 export * from "./ProductsController";
 export * from "./UsersController";

@@ -5,7 +5,8 @@
         "./src/services",
         "./src/dtos/in",
         "./src/dtos/out",
-        "./src/constants"
+        "./src/constants",
+        "./src/utils"
     ],
     "exclude": ["__mock__", "__mocks__", ".spec.ts"],
     "delete": true
