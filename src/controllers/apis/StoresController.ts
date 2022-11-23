@@ -5,15 +5,15 @@ import { Controller, Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { Description, Post, Returns } from "@tsed/schema";
 
-@Controller("/cart")
+@Controller("/stores")
 export class CartController {
     @Inject()
     private storesService: StoresService;
 
     @Post("/")
-    @Description("Get cart items")
+    @Description("Get list of stores")
     @Returns(200, Array).Of(StoreDto)
-    async getStores(@BodyParams() payload: GetStoresQueryDto): Promise<StoreDto[]> {
-        return this.storesService.getStores(payload);
+    async getStores(@BodyParams() query: GetStoresQueryDto): Promise<StoreDto[]> {
+        return this.storesService.getStores(query);
     }
 }
