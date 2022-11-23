@@ -4,5 +4,6 @@
 
 export * from "./CreateOrderDto";
 export * from "./GetProductsQueryDto";
+export * from "./GetStoresQueryDto";
 export * from "./UpdateCartItemDto";
 export * from "./UpdateUserInfoDto";

@@ -99,6 +99,14 @@ model Rating {
   productId String  @db.ObjectId
 }
 
+model Store {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  brandUrl    String
+  description String
+  products    Product[]
+}
+
 model Product {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -113,6 +121,8 @@ model Product {
   ratings       Rating[]
   createdAt     DateTime      @default(now())
   cartItems     CartItem[]
+  store         Store         @relation(fields: [storeId], references: [id])
+  storeId       String        @db.ObjectId
 }
 
 model ProductType {

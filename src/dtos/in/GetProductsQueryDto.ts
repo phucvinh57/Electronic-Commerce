@@ -32,7 +32,7 @@ class ProductQueryOrder {
     @Required()
     order: SortOrder;
 
-    @Enum(SortOrder)
+    @Enum(ProductSortCriterion)
     @Required()
     criterion: ProductSortCriterion;
 }
