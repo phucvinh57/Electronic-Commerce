@@ -68,6 +68,8 @@ export class OrderDto {
         this.date = order.createdAt;
         this.price = order.price;
         this.discount = order.discount;
+        this.orderCodeGHN = order.orderCodeGHN;
+        this.shippingFee = this.shippingFee;
 
         this.items = order.items.map((item) => new OrderItem(item));
     }
