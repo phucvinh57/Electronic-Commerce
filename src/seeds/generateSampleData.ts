@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { envs } from "../config/envs";
-import { Gender, PrismaClient, Product } from "@prisma/client";
+import { Gender, PrismaClient, Product, Store } from "@prisma/client";
 import { $log } from "@tsed/logger";
 import axios from "axios";
 import { ProductSize } from "@tsed/prisma";
@@ -17,8 +17,8 @@ const db: PrismaClient = new PrismaClient();
 const initUser = {
     email: "fanmu@gmail.com",
     password: "abcd1234",
-    firstName: "Vinh",
-    lastName: "Nguyễn Phúc"
+    firstName: "Bình",
+    lastName: "Thanh Cao"
 };
 
 async function generateSampleData() {
@@ -59,8 +59,26 @@ async function generateSampleData() {
         );
         const userId: string = initUserResponse.data.user.id;
         console.log(initUserResponse.data);
-        await db.$connect();
 
+        const storesData = [
+            {
+                name: "Fan MU",
+                description: "<h3>MU in the cave</h3>",
+                brandUrl:
+                    "https://i2-vnexpress.vnecdn.net/2019/03/11/Untitled1-1552265719-7708-1552266254.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=65_6miw26bKfqJgB07VA6g"
+            },
+            {
+                name: "Fan stocism",
+                description: "<h3>Death smiles at us all. All a man can do is smile back.</h3>",
+                brandUrl: "https://avatars.githubusercontent.com/u/69946748"
+            }
+        ];
+
+        const stores: Store[] = [];
+        const s1 = await db.store.create({ data: storesData[0] });
+        stores.push(s1);
+        const s2 = await db.store.create({ data: storesData[1] });
+        stores.push(s2);
         const productData = [
             {
                 name: "Rick & Morty T-shirt",
@@ -68,7 +86,8 @@ async function generateSampleData() {
                     "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/divhtybtltxjtyhhq2i5/tee-shirt-sportswear-club-pour-DDLtRZ.png",
                 price: 14.5,
                 genders: [Gender.MALE],
-                description: "Markdown"
+                description: "Markdown",
+                storeId: stores[0].id
             },
             {
                 name: "Sport T-shirt",
@@ -76,16 +95,20 @@ async function generateSampleData() {
                     "https://img.freepik.com/premium-vector/red-blue-soccer-jersey-uniform-football-club-t-shirt-front-back-view_155717-597.jpg",
                 genders: [Gender.MALE],
                 price: 2.3,
-                description: "Markdown"
+                description: "Markdown",
+                storeId: stores[0].id
             },
             {
                 name: "Unisex T-Shirt",
                 coverImageUrl: "https://cf.shopee.vn/file/d1973fb369dc54e73ec151da5e3be2f3",
                 genders: [Gender.FEMALE, Gender.MALE, Gender.OTHER],
                 price: 8.5,
-                description: "Markdown"
+                description: "Markdown",
+                storeId: stores[1].id
             }
         ];
+
+        await db.$connect();
 
         const products: Product[] = [];
         for (const data of productData) {
