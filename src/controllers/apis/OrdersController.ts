@@ -17,8 +17,11 @@ import { SessionContainer } from "supertokens-node/recipe/session";
 import { OrderStatus } from "@tsed/prisma";
 import { OrderDto } from "@dtos/out";
 import { ID_LENGTH } from "@constants";
+import { UseBefore } from "@tsed/platform-middlewares";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 @Controller("/orders")
+@UseBefore(verifySession())
 export class OrdersController {
     @Inject()
     private ordersService: OrdersService;

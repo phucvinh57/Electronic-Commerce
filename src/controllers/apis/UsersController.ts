@@ -2,11 +2,14 @@ import { UpdateUserInfoDto } from "@dtos/in";
 import { UserInfoDto } from "@dtos/out";
 import { UsersService } from "@services";
 import { Controller, Inject } from "@tsed/di";
+import { UseBefore } from "@tsed/platform-middlewares";
 import { BodyParams, Session } from "@tsed/platform-params";
 import { Description, Get, Put, Returns } from "@tsed/schema";
 import { SessionContainer } from "supertokens-node/recipe/session";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 @Controller("/users")
+@UseBefore(verifySession())
 @Description("Account page")
 export class UsersController {
     @Inject()

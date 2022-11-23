@@ -13,10 +13,8 @@ import { config } from "./config/index";
 import * as apis from "./controllers/apis/index";
 import * as pages from "./controllers/pages/index";
 import { CORS_WHITE_LIST } from "@envs";
-
+import { supertokens } from "@middlewares";
 import { middleware as supertokensMiddleware } from "supertokens-node/framework/express";
-import { verifySession } from "supertokens-node/recipe/session/framework/express";
-import supertokens from "./middlewares/supertokens";
 
 @Configuration({
     ...config,
@@ -47,8 +45,7 @@ import supertokens from "./middlewares/supertokens";
         bodyParser.urlencoded({
             extended: true
         }),
-        supertokensMiddleware(),
-        verifySession()
+        supertokensMiddleware()
     ],
     views: {
         root: join(process.cwd(), "../views"),

@@ -3,6 +3,7 @@ import { UpdateCartItemDto } from "@dtos/in";
 import { CartItemDto } from "@dtos/out";
 import { CartService } from "@services";
 import { Controller, Inject } from "@tsed/di";
+import { UseBefore } from "@tsed/platform-middlewares";
 import { BodyParams, PathParams, Session } from "@tsed/platform-params";
 import {
     Delete,
@@ -17,8 +18,10 @@ import {
     Returns
 } from "@tsed/schema";
 import { SessionContainer } from "supertokens-node/recipe/session";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 @Controller("/cart")
+@UseBefore(verifySession())
 export class CartController {
     @Inject()
     private cartService: CartService;

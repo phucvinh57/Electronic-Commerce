@@ -6,7 +6,8 @@
         "./src/dtos/in",
         "./src/dtos/out",
         "./src/constants",
-        "./src/utils"
+        "./src/utils",
+        "./src/middlewares"
     ],
     "exclude": ["__mock__", "__mocks__", ".spec.ts"],
     "delete": true

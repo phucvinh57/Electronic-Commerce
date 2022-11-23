@@ -118,4 +118,4 @@ SuperTokens.init({
     ]
 });
 
-export default SuperTokens;
+export const supertokens = SuperTokens;

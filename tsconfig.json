@@ -33,7 +33,8 @@
             "@dtos/in": ["./src/dtos/in"],
             "@dtos/out": ["./src/dtos/out"],
             "@constants": ["./src/constants"],
-            "@utils": ["./src/utils"]
+            "@utils": ["./src/utils"],
+            "@middlewares": ["./src/middlewares"]
         }
     },
     "include": ["src"],
