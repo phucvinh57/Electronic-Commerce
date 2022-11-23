@@ -7,4 +7,5 @@ export * from "./OrderDto";
 export * from "./ProductBriefDto";
 export * from "./ProductDetailDto";
 export * from "./StoreDto";
+export * from "./StoreWithProductsDto";
 export * from "./UserInfoDto";

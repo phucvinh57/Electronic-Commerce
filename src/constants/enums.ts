@@ -1,8 +1,8 @@
 export enum ProductSortCriterion {
-    BEST_SELLER,
-    ON_SALE,
-    NEW_ARRIVAL,
-    NONE
+    BEST_SELLER = "BEST_SELLER",
+    ON_SALE = "ON_SALE",
+    NEW_ARRIVAL = "NEW_ARRIVAL",
+    NONE = "NONE"
 }
 
 export enum SortOrder {
