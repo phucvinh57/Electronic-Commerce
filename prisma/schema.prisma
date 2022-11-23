@@ -50,6 +50,7 @@ model CartItem {
 
 model Order {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  orderCodeGHN  String
   address       String
   phone         String
   shippingFee   Float

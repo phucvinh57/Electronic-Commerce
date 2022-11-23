@@ -1,4 +1,4 @@
-import { FAVOUR, SHIPPING_FEE } from "@constants";
+import { FAVOUR } from "@constants";
 import { CreateOrderDto } from "@dtos/in";
 import { OrderDto } from "@dtos/out";
 import { Prisma, PrismaClient } from "@prisma/client";
@@ -37,7 +37,7 @@ export class OrdersService {
 
         const orderItems: Prisma.OrderItemCreateManyOrderInput[] = [];
         userCartItems.forEach((item) => {
-            totalPrice += item.product.price;
+            totalPrice += item.product.price * item.quantity;
             if (item.product.discount) totalDiscount += item.product.discount;
             orderItems.push({
                 name: item.product.name,
@@ -61,7 +61,8 @@ export class OrdersService {
                 data: {
                     address: payload.address,
                     phone: payload.phone,
-                    shippingFee: SHIPPING_FEE,
+                    shippingFee: payload.shippingFee,
+                    orderCodeGHN: payload.orderCodeGHN,
                     paymentMethod: payload.paymentMethod,
                     userId: userId,
                     price: totalPrice,
