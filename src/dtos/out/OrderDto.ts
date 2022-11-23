@@ -1,5 +1,5 @@
 import { OrderItemModel, OrderModel, ProductSize } from "@tsed/prisma";
-import { CollectionOf, Enum, Example, Nullable, Property } from "@tsed/schema";
+import { CollectionOf, Enum, Example, Name, Nullable, Property } from "@tsed/schema";
 
 class OrderItem {
     @Example("632d3d4f94440a5c9ea40e38")
@@ -54,6 +54,14 @@ export class OrderDto {
 
     @CollectionOf(OrderItem)
     items: OrderItem[];
+
+    @Example("AS5WQ9")
+    @Name("order_code_ghn")
+    orderCodeGHN: string;
+
+    @Example(12)
+    @Name("ship_cost")
+    shippingFee: number;
 
     constructor(order: OrderModel) {
         this.id = order.id;
