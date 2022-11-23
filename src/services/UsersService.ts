@@ -35,7 +35,8 @@ export class UsersService {
                 email: payload.email,
                 phone: payload.phone,
                 birthday: payload.birthday,
-                gender: payload.gender
+                gender: payload.gender,
+                avatarUrl: payload.avatarUrl
             },
             where: { userId }
         });

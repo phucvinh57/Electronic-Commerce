@@ -29,4 +29,8 @@ export class UpdateUserInfoDto {
     @Nullable(Date)
     @Property(Date)
     birthday: Date | null;
+
+    @Nullable(String)
+    @Example("https://avatars.githubusercontent.com/u/69946748")
+    avatarUrl?: string | null;
 }
